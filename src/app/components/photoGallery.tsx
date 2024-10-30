@@ -1,6 +1,5 @@
 'use client';
 
-
 import React, { useEffect, useState } from 'react';
 import { ref, onValue } from 'firebase/database';
 import { database, storage } from '@/app/pages/config/firebase';
@@ -36,11 +35,11 @@ const PhotoGallery: React.FC = () => {
 
   return (
     <PhotoProvider>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
         {photos.map((photo) => (
           <motion.div
             key={photo.id}
-            className="cursor-pointer w-full h-48 md:h-40 lg:h-32"
+            className="cursor-pointer w-full h-40 sm:h-36 md:h-32"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.3 }}
@@ -49,7 +48,7 @@ const PhotoGallery: React.FC = () => {
               <img
                 src={photo.url}
                 alt=""
-                className="w-full h-full max-h-[500px] max-w-[500px] object-contain rounded-lg shadow-md"
+                className="w-full h-full max-h-[200px] max-w-[200px] object-cover rounded-lg shadow-md"
               />
             </PhotoView>
           </motion.div>
@@ -60,4 +59,3 @@ const PhotoGallery: React.FC = () => {
 };
 
 export default PhotoGallery;
-
