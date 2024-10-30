@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.2",
     "firebase": "^11.0.1",
     "framer-motion": "^11.11.10",
     "lg-thumbnail": "^1.2.1",
