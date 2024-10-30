@@ -12,7 +12,7 @@ const Home: React.FC = () => {
         <meta name="description" content="Galería de Fotos con Firebase y Next.js" />
       </Head>
       <Header />
-      <main className="min-h-screen bg-gray-100 p-4">
+      <main className="bg-gray-100 p-4">
         <PhotoGallery />
       </main>
       <Footer />
