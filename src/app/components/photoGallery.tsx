@@ -16,7 +16,7 @@ type Photo = {
 const PhotoGallery: React.FC = () => {
   const [photos, setPhotos] = useState<Photo[]>([]);
   const [selectedPhotoUrl, setSelectedPhotoUrl] = useState<string | null>(null);
-  const [showGallery, setShowGallery] = useState(false); // Controla la visibilidad de la galería
+  const [showGallery, setShowGallery] = useState(false);
 
   useEffect(() => {
     const dbRef = ref(database, 'photos');
@@ -68,8 +68,8 @@ const PhotoGallery: React.FC = () => {
           </div>
 
           {selectedPhotoUrl && (
-            <PhotoView src={selectedPhotoUrl} onClose={() => setSelectedPhotoUrl(null)}>
-              <img src={selectedPhotoUrl} alt="Selected" />
+            <PhotoView src={selectedPhotoUrl}>
+              <img src={selectedPhotoUrl} alt="Selected" onClick={() => setSelectedPhotoUrl(null)} />
             </PhotoView>
           )}
         </PhotoProvider>
