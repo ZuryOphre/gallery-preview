@@ -4,7 +4,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { ref, onValue } from 'firebase/database';
-import { database, storage } from '../firebaseConfig';
+import { database, storage } from '@/app/pages/config/firebase';
 import { getDownloadURL, ref as storageRef } from 'firebase/storage';
 import LightGallery from 'lightgallery/react';
 import 'lightgallery/css/lightgallery.css';
