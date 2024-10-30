@@ -15,7 +15,8 @@
     "lightgallery": "^2.7.2",
     "next": "13.4.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "yet-another-react-lightbox": "^3.21.6"
   },
   "devDependencies": {
     "@types/node": "^20",
