@@ -39,14 +39,22 @@ const PhotoGallery: React.FC = () => {
     <PhotoProvider>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
         {photos.map((photo) => (
-          <motion.div key={photo.id} className="cursor-pointer w-full">
+          <motion.div
+            key={photo.id}
+            className="cursor-pointer"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ duration: 0.3 }}
+          >
             <PhotoView src={photo.url}>
-              <div className="aspect-w-1 aspect-h-1">
-                <img
-                  src={photo.url}
-                  alt=""
-                  className="object-cover rounded-lg shadow-md"
-                />
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="w-48 h-48">
+                  <img
+                    src={photo.url}
+                    alt=""
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               </div>
             </PhotoView>
           </motion.div>
