@@ -1,8 +1,10 @@
+
+// components/PhotoGallery.tsx
 "use client";
 
 import React, { useEffect, useState } from 'react';
 import { ref, onValue } from 'firebase/database';
-import { database, storage } from '@/app/pages/config/firebase';
+import { database, storage } from '../firebaseConfig';
 import { getDownloadURL, ref as storageRef } from 'firebase/storage';
 import LightGallery from 'lightgallery/react';
 import 'lightgallery/css/lightgallery.css';
@@ -40,7 +42,7 @@ const PhotoGallery: React.FC = () => {
       {photos.map((photo) => (
         <motion.div
           key={photo.id}
-          className="cursor-pointer"
+          className="cursor-pointer w-full h-60"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           transition={{ duration: 0.3 }}
@@ -49,8 +51,7 @@ const PhotoGallery: React.FC = () => {
             <img
               src={photo.url}
               alt=""
-              className="w-full h-auto max-h-96 object-cover rounded-lg shadow-md"
-              style={{ aspectRatio: 'auto' }}
+              className="w-full h-full object-cover rounded-lg shadow-md"
             />
           </a>
         </motion.div>
