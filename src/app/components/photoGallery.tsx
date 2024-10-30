@@ -10,12 +10,13 @@ import 'react-photo-view/dist/react-photo-view.css';
 
 type Photo = {
   id: string;
-  storagePath: string; // Guardar la ruta de almacenamiento sin cargar el URL
+  url?: string; // Hacemos que url sea opcional
+  storagePath: string;
 };
 
 const PhotoGallery: React.FC = () => {
   const [photos, setPhotos] = useState<Photo[]>([]);
-  const [loadedPhotos, setLoadedPhotos] = useState<string[]>([]); // URLs cargadas
+  const [loadedPhotos, setLoadedPhotos] = useState<Photo[]>([]); // Ajustamos el tipo a Photo[]
   const [showGallery, setShowGallery] = useState(false); // Controla la visibilidad de la galería
 
   useEffect(() => {
@@ -38,7 +39,7 @@ const PhotoGallery: React.FC = () => {
       return { ...photo, url };
     });
     const loaded = await Promise.all(photoPromises);
-    setLoadedPhotos(loaded);
+    setLoadedPhotos(loaded); // Guardamos los objetos completos de tipo Photo
     setShowGallery(true); // Muestra la galería
   };
 
@@ -62,7 +63,7 @@ const PhotoGallery: React.FC = () => {
                 whileTap={{ scale: 0.98 }}
                 transition={{ duration: 0.3 }}
               >
-                <PhotoView src={photo.url}>
+                <PhotoView src={photo.url!}>
                   <div className="bg-white rounded-lg shadow-md overflow-hidden">
                     <div className="w-48 h-48">
                       <img
