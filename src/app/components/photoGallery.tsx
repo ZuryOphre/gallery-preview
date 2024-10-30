@@ -10,13 +10,12 @@ import 'react-photo-view/dist/react-photo-view.css';
 
 type Photo = {
   id: string;
-  url?: string; // Hacemos que url sea opcional
   storagePath: string;
 };
 
 const PhotoGallery: React.FC = () => {
   const [photos, setPhotos] = useState<Photo[]>([]);
-  const [loadedPhotos, setLoadedPhotos] = useState<Photo[]>([]); // Ajustamos el tipo a Photo[]
+  const [selectedPhotoUrl, setSelectedPhotoUrl] = useState<string | null>(null);
   const [showGallery, setShowGallery] = useState(false); // Controla la visibilidad de la galería
 
   useEffect(() => {
@@ -26,28 +25,23 @@ const PhotoGallery: React.FC = () => {
       if (data) {
         const photoList = Object.keys(data).map((key) => ({
           id: key,
-          storagePath: data[key].storagePath, // Almacena solo la ruta de almacenamiento
+          storagePath: data[key].storagePath,
         }));
         setPhotos(photoList);
       }
     });
   }, []);
 
-  const loadImages = async () => {
-    const photoPromises = photos.map(async (photo) => {
-      const url = await getDownloadURL(storageRef(storage, photo.storagePath));
-      return { ...photo, url };
-    });
-    const loaded = await Promise.all(photoPromises);
-    setLoadedPhotos(loaded); // Guardamos los objetos completos de tipo Photo
-    setShowGallery(true); // Muestra la galería
+  const handleImageClick = async (photo: Photo) => {
+    const url = await getDownloadURL(storageRef(storage, photo.storagePath));
+    setSelectedPhotoUrl(url);
   };
 
   return (
     <div className="p-4">
       {!showGallery ? (
         <button 
-          onClick={loadImages} 
+          onClick={() => setShowGallery(true)} 
           className="px-4 py-2 bg-blue-500 text-white rounded-lg"
         >
           Ver Galería
@@ -55,28 +49,29 @@ const PhotoGallery: React.FC = () => {
       ) : (
         <PhotoProvider>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
-            {loadedPhotos.map((photo) => (
+            {photos.map((photo) => (
               <motion.div
                 key={photo.id}
                 className="cursor-pointer"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ duration: 0.3 }}
+                onClick={() => handleImageClick(photo)}
               >
-                <PhotoView src={photo.url!}>
-                  <div className="bg-white rounded-lg shadow-md overflow-hidden">
-                    <div className="w-48 h-48">
-                      <img
-                        src={photo.url}
-                        alt=""
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
+                <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                  <div className="w-48 h-48 flex items-center justify-center bg-gray-200">
+                    <span className="text-gray-500">Ver Imagen</span>
                   </div>
-                </PhotoView>
+                </div>
               </motion.div>
             ))}
           </div>
+
+          {selectedPhotoUrl && (
+            <PhotoView src={selectedPhotoUrl} onClose={() => setSelectedPhotoUrl(null)}>
+              <img src={selectedPhotoUrl} alt="Selected" />
+            </PhotoView>
+          )}
         </PhotoProvider>
       )}
     </div>
