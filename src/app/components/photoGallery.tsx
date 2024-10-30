@@ -21,35 +21,33 @@ const PhotoGallery: React.FC = () => {
     onValue(dbRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        const photosArray = Object.keys(data).map(async (key) => {
-          const url = await getDownloadURL(storageRef(storage, data[key].storagePath));
+        const photoPromises = Object.keys(data).map(async (key) => {
+          const url = await getDownloadURL(
+            storageRef(storage, data[key].storagePath)
+          );
           return {
             id: key,
             url,
           };
         });
-        Promise.all(photosArray).then(setPhotos);
+        Promise.all(photoPromises).then(setPhotos);
       }
     });
   }, []);
 
   return (
     <PhotoProvider>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
         {photos.map((photo) => (
-          <motion.div
-            key={photo.id}
-            className="cursor-pointer w-full h-40 sm:h-36 md:h-32"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ duration: 0.3 }}
-          >
+          <motion.div key={photo.id} className="cursor-pointer w-full">
             <PhotoView src={photo.url}>
-              <img
-                src={photo.url}
-                alt=""
-                className="w-full h-full object-cover rounded-lg shadow-md"
-              />
+              <div className="aspect-w-1 aspect-h-1">
+                <img
+                  src={photo.url}
+                  alt=""
+                  className="object-cover rounded-lg shadow-md"
+                />
+              </div>
             </PhotoView>
           </motion.div>
         ))}
