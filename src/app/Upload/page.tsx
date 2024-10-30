@@ -7,50 +7,35 @@ import { database, storage } from '@/app/pages/config/firebase';
 import { motion } from 'framer-motion';
 
 const Upload: React.FC = () => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [file, setFile] = useState<File | null>(null);
+  const [files, setFiles] = useState<FileList | null>(null);
 
   const handleUpload = async () => {
-    if (!file) return;
+    if (!files) return;
 
-    const storagePath = `photos/${file.name}`;
-    const storageReference = storageRef(storage, storagePath);
-    await uploadBytes(storageReference, file);
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const storagePath = `photos/${file.name}`;
+      const storageReference = storageRef(storage, storagePath);
+      await uploadBytes(storageReference, file);
 
-    await push(dbRef(database, 'photos'), {
-      title,
-      description,
-      storagePath,
-    });
+      await push(dbRef(database, 'photos'), {
+        storagePath,
+      });
+    }
 
-    setTitle('');
-    setDescription('');
-    setFile(null);
-    alert('Foto subida exitosamente');
+    setFiles(null);
+    alert('Fotos subidas exitosamente');
   };
 
   return (
     <div className="min-h-screen p-8 bg-gray-100">
       <motion.h1 className="text-2xl font-bold mb-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}>
-        Subir Foto
+        Subir Fotos
       </motion.h1>
       <input
-        type="text"
-        placeholder="Título"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        className="border p-2 w-full mb-4"
-      />
-      <textarea
-        placeholder="Descripción"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        className="border p-2 w-full mb-4"
-      ></textarea>
-      <input
         type="file"
-        onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
+        multiple
+        onChange={(e) => setFiles(e.target.files)}
         className="mb-4"
       />
       <motion.button
@@ -59,7 +44,7 @@ const Upload: React.FC = () => {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        Subir Foto
+        Subir Fotos
       </motion.button>
     </div>
   );

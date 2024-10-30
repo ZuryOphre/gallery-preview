@@ -8,12 +8,11 @@ import LightGallery from 'lightgallery/react';
 import 'lightgallery/css/lightgallery.css';
 import 'lightgallery/css/lg-thumbnail.css';
 import lgThumbnail from 'lightgallery/plugins/thumbnail';
+import { motion } from 'framer-motion';
 
 type Photo = {
   id: string;
-  title: string;
   url: string;
-  description: string;
 };
 
 const PhotoGallery: React.FC = () => {
@@ -28,9 +27,7 @@ const PhotoGallery: React.FC = () => {
           const url = await getDownloadURL(storageRef(storage, data[key].storagePath));
           return {
             id: key,
-            title: data[key].title,
             url,
-            description: data[key].description,
           };
         });
         Promise.all(photosArray).then(setPhotos);
@@ -41,9 +38,22 @@ const PhotoGallery: React.FC = () => {
   return (
     <LightGallery plugins={[lgThumbnail]} elementClassNames="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
       {photos.map((photo) => (
-        <a key={photo.id} href={photo.url} data-sub-html={`<h4>${photo.title}</h4><p>${photo.description}</p>`}>
-          <img src={photo.url} alt={photo.title} className="w-full h-48 object-cover rounded-lg shadow-md" />
-        </a>
+        <motion.div
+          key={photo.id}
+          className="cursor-pointer"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ duration: 0.3 }}
+        >
+          <a href={photo.url}>
+            <img
+              src={photo.url}
+              alt=""
+              className="w-full h-auto max-h-96 object-cover rounded-lg shadow-md"
+              style={{ aspectRatio: 'auto' }}
+            />
+          </a>
+        </motion.div>
       ))}
     </LightGallery>
   );
