@@ -1,5 +1,6 @@
 'use client';
 
+
 import React, { useEffect, useState } from 'react';
 import { ref, onValue } from 'firebase/database';
 import { database, storage } from '@/app/pages/config/firebase';
@@ -48,7 +49,7 @@ const PhotoGallery: React.FC = () => {
               <img
                 src={photo.url}
                 alt=""
-                className="w-full h-full max-h-[200px] max-w-[200px] object-cover rounded-lg shadow-md"
+                className="w-full h-auto max-h-[150px] object-cover rounded-lg shadow-md"
               />
             </PhotoView>
           </motion.div>
@@ -59,3 +60,4 @@ const PhotoGallery: React.FC = () => {
 };
 
 export default PhotoGallery;
+
