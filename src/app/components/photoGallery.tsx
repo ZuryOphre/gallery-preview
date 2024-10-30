@@ -42,7 +42,7 @@ const PhotoGallery: React.FC = () => {
       {photos.map((photo) => (
         <motion.div
           key={photo.id}
-          className="cursor-pointer w-full h-60"
+          className="cursor-pointer w-full h-48 md:h-40 lg:h-32"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           transition={{ duration: 0.3 }}
